@@ -109,8 +109,25 @@ void prepareMove(uint16_t duration, int penStepsEBB, int rotStepsEBB) {
 #ifdef BOARD_ULN2003
 		// map 3200x800 eggbot corrdinates to our 28BYJ-48's penStepsPerRev and rotStepsUseable
 
-		rotStepsEBB = map(rotStepsEBB, 0, 3200, 0, penStepsPerRev);
-		penStepsEBB = map(penStepsEBB, 0, 800, 0, rotStepsUseable);
+		/*rotStepsEBB = map(rotStepsEBB, 0, 3200, 0, penStepsPerRev);
+		penStepsEBB = map(penStepsEBB, 0, 800, 0, rotStepsUseable);*/
+
+    long rotStepsX16 = (long)(rotStepsEBB * 16L);
+    long penStepsX16 = (long)(penStepsEBB * 16L);
+
+    // Compare regular solution against 16x magnified solution
+    long rotSteps = (long)((rotStepsEBB) * rotScale) + (rotStepError / 16);
+    long penSteps = (long)((penStepsEBB) * penScale) + (penStepError / 16);
+
+    rotStepsX16 = (long)((rotStepsX16 * rotScale) + rotStepError);
+    penStepsX16 = (long)((penStepsX16 * penScale) + penStepError);
+
+    // Compute new error terms
+    rotStepError = rotStepsX16 - (rotSteps * 16L);
+    penStepError = penStepsX16 - (penSteps * 16L);
+
+    rotStepsEBB = rotSteps;
+    penStepsEBB = penSteps;
 #endif		
 
 		rotMotor.move(rotStepsEBB);

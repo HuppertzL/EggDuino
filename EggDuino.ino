@@ -37,14 +37,14 @@
 	// http://www.thingiverse.com/thing:1461709
 	#define rotMicrostep 16
 	#define penMicrostep 16
-	#define servoPin 10
-	#define engraverPin 11
+	#define servoPin 13
+	#define engraverPin 12
 	
 	// These values work for my 28BYJ-48's, Your's might 
 	// be different and may need adjustment.
 	
-	#define penStepsPerRev 4096
-	#define rotStepsUseable 1100
+	#define rotStepsPerRev 4096
+	#define penStepsUseable 1100
 	
 	//Buttons (uncomment to enable)
 	//#define prgButton 2 // PRG button
@@ -113,7 +113,7 @@ void moveOneStep();
 //make Objects
 #ifdef BOARD_ULN2003
 AccelStepper rotMotor(AccelStepper::HALF4WIRE, 2,4,3,5, true);
-AccelStepper penMotor(AccelStepper::HALF4WIRE, 6,8,7,9, true);
+AccelStepper penMotor(AccelStepper::HALF4WIRE, 8,10,9,11, true);
 #else
 AccelStepper rotMotor(1, step1, dir1);
 AccelStepper penMotor(1, step2, dir2);
@@ -149,6 +149,8 @@ uint8_t penStepCorrection = 16/penMicrostep ; //devide EBB-Coordinates by this f
 float rotSpeed=0;
 float penSpeed=0; // these are local variables for Function SteppermotorMove-Command, but for performance-reasons it will be initialized here
 boolean motorsEnabled = 0;
+float rotScale = (float)rotStepsPerRev / 3200.0;
+float penScale = (float)penStepsUseable / 800.0;
 
 void setup() {   
 	Serial.begin(9600);
