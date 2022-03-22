@@ -37,7 +37,7 @@
 	// http://www.thingiverse.com/thing:1461709
 	#define rotMicrostep 16
 	#define penMicrostep 16
-	#define servoPin 10
+	#define servoPin 11
 	#define engraverPin 12
 	
 	// These values work for my 28BYJ-48's, Your's might 
